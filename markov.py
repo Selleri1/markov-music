@@ -1,6 +1,11 @@
 import soundfile as sf
 import numpy as np
 
+def markov(x: np.ndarray, P: np.ndarray):
+    """Utför formeln för markovkedjan. Tar in ett x_k och returnerar ett x_(k+1) med
+    matrisen P."""
+    return P @ x
+
 def main():
     # Storleken på matrisen. Vektorerna kommer ha storleken COL. 
     COL = 88
@@ -18,9 +23,18 @@ def main():
     print(P.sum(0))
 
     # Sannolikhetsvektorn (state vector) som kedjan startar med
-    q0 = np.zeros(COL, 1)
-    q0[3] = 1
-
+    x0 = np.zeros((COL, 1))
+    x0[3] = 1
+    
+    print(x0)
+    
+    #Testa 10000 iterationer av markov för att se att x konvergerar mot något
+    x = x0
+    for i in range(10000):
+        x = markov(x, P)
+        if i >= 10000-5:
+            print(x[85:], end="\n--------\n")
+    
 
 if __name__ == "__main__":
     main()
