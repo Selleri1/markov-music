@@ -1,14 +1,28 @@
 import soundfile as sf
 import numpy as np
 
+def main():
+    # Storleken på matrisen. Vektorerna kommer ha storleken COL. 
+    COL = 88
+    ROW = 88
 
-# Skapa en 7744x88-matris fylld med slumpvalda tal mellan 0 och 1
-P1 = np.random.rand(7744,88)
+    # Skapa en COL x ROW-matris fylld med slumpvalda tal mellan 0 och 1.
+    P1 = np.random.rand(COL, ROW)
 
-# Gör om P1 till en övergångsmatris/stokastisk matris (summan av varje kollon ska vara 1)
-# genom att dividera varje kolonn med dess summa.
-# Källa: https://stackoverflow.com/questions/43644320/how-to-make-numpy-array-column-sum-up-to-1
-P = P1/P1.sum(axis=0,keepdims=1)
-    
-# Skriv ut summan av varje kolonn för att säkerställa att de alla är 1
-print(P.sum(0))
+    # Gör om P1 till en övergångsmatris/stokastisk matris (summan av varje kollon ska vara 1)
+    # genom att dividera varje kolonn med dess summa.
+    # Källa: https://stackoverflow.com/questions/43644320/how-to-make-numpy-array-column-sum-up-to-1
+    P = P1/P1.sum(axis=0,keepdims=1)
+        
+    # Skriv ut summan av varje kolonn för att säkerställa att de alla är 1
+    print(P.sum(0))
+
+    # Sannolikhetsvektorn (state vector) som kedjan startar med
+    q0 = np.zeros(COL, 1)
+    q0[3] = 1
+
+
+if __name__ == "__main__":
+    main()
+
+# (7744x88) andra ordningen?
