@@ -33,9 +33,13 @@ def main():
     for i in range(10000):
         x = markov(x, P)
         if i >= 10000-5:
-            print(x[85:], end="\n--------\n")
+            print(x[85:], end="\n--------\n") 
     
-
+    # Jag försökte lösa vad kedjan ska konvergera mot men
+    # det är svårt att lösa ekvationssystem med med än en lösning med numpy...
+    #q = np.linalg.solve(P - np.eye(ROW, COL), np.zeros((COL, 1)))
+    #print(q[85:])
+    
 if __name__ == "__main__":
     main()
 
