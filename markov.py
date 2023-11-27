@@ -36,7 +36,7 @@ def main():
             print(x[85:], end="\n--------\n") 
     
     # Jag försökte lösa vad kedjan ska konvergera mot men
-    # det är svårt att lösa ekvationssystem med med än en lösning med numpy...
+    # det är svårt att lösa ekvationssystem med mer än en lösning med numpy...
     #q = np.linalg.solve(P - np.eye(ROW, COL), np.zeros((COL, 1)))
     #print(q[85:])
     
