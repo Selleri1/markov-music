@@ -1,3 +1,5 @@
+
+
 import soundfile as sf
 import numpy as np
 
@@ -30,8 +32,10 @@ def main():
     
     #Testa 10000 iterationer av markov för att se att x konvergerar mot något
     x = x0
+    lista_av_toner=[]
     for i in range(10000):
         x = markov(x, P)
+        lista_av_toner.append(x)
         if i >= 10000-5:
             print(x[85:], end="\n--------\n") 
     
