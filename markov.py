@@ -1,5 +1,5 @@
 
-
+import soundfile as sf
 import numpy as np
 import random
 
@@ -7,29 +7,26 @@ def generate_random_boolean(probability_true):
     return random.random() < probability_true
 
 def binary_vector(prob_vector):
-    bi_vector = np.zeros_like(prob_vector)
-    summa = 1
+    bi_vector=prob_vector
+    summa=1
     for x in range(len(bi_vector)):
-        if x != len(bi_vector) - 1:
-            if generate_random_boolean(prob_vector[x] / summa):
-                bi_vector[x] = 1
-                bi_vector[x+1:] = [0] * (len(bi_vector) - x - 1)
+        if x!=len(bi_vector)-1:
+            if generate_random_boolean(bi_vector[x]/summa):
+                bi_vector[x]=1
+                bi_vector[x+1:] = [0] * (len(bi_vector)-x-1)
                 break
             else:
-                bi_vector[x] = 0
-                summa -= prob_vector[x]
+                bi_vector[x]=0
+                summa-=bi_vector[x]
         else:
-            bi_vector[x] = 1
-    print(bi_vector[:, np.newaxis])  # Add np.newaxis to ensure column vector
-    return bi_vector[:, np.newaxis]
-
-
+            bi_vector[x]=1
+    print(bi_vector)
+    return bi_vector
 
 def markov(x: np.ndarray, P: np.ndarray):
     """Utför formeln för markovkedjan. Tar in ett x_k och returnerar ett x_(k+1) med
     matrisen P."""
-    return np.dot(P, x).reshape(-1, 1)
-
+    return P @ x
 
 def main():
     # Storleken på matrisen. Vektorerna kommer ha storleken COL. 
