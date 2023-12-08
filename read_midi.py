@@ -3,7 +3,11 @@ import mido as m
 from enum import Enum
 
 FILENAME = "chesnuts.mid"
-    
+
+FILES ={
+    "chesnuts.mid": 1,
+    "holy-night.mid": 1
+}
 
 def read_midi(filename: str, track: int):
     mid = m.MidiFile(filename)
