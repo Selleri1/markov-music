@@ -1,4 +1,3 @@
-
 import soundfile as sf
 import numpy as np
 import random
@@ -7,7 +6,10 @@ def generate_random_boolean(probability_true):
     return random.random() < probability_true
 
 def binary_vector(prob_vector):
-    bi_vector=prob_vector
+    bi_vector=[]
+    for y in range(len(prob_vector)):
+        bi_vector.append(prob_vector[y][0])
+    print(bi_vector[0])
     summa=1
     for x in range(len(bi_vector)):
         if x!=len(bi_vector)-1:
@@ -67,7 +69,6 @@ def main():
     for x in range(len(lista_av_sannolikhetsvektorer)):
         lista_av_toner.append(binary_vector(lista_av_sannolikhetsvektorer[x]))
     
-    print(lista_av_toner)
 if __name__ == "__main__":
     main()
 
