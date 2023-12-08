@@ -4,7 +4,8 @@ from enum import Enum
 
 FILENAME = "chesnuts.mid"
 
-FILES ={
+# Filnamn och vilket track som är melodin i respektive fil
+FILES = {
     "chesnuts.mid": 1,
     "holy-night.mid": 1
 }
