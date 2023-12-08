@@ -2,10 +2,10 @@ import midiutil.MidiFile
 import mido as m
 from enum import Enum
 
-FILENAME = "mii.mid"
+FILENAME = "chesnuts.mid"
     
 
-def read_midi(filename: str):
+def read_midi(filename: str, track: int):
     mid = m.MidiFile(filename)
     # for i, track in enumerate(mid.tracks):
     #     print('Track {}: {}'.format(i, track.name))
@@ -15,21 +15,23 @@ def read_midi(filename: str):
     rythm_track: m.MidiTrack = mid.tracks[0]
     note_track: m.MidiTrack = mid.tracks[1]
     
+    #tracks = []
+    #for track in mid.tracks:
     notes = []
-    
-    for message in note_track:
+    for message in mid.tracks[track]:
         if type(message) != m.Message:
             continue
         note = str(message).split(" ")
         
-        if note[0] == "note_on":
+        print(note)
+        if note[0] == "note_on" and int(note[3][9:])==0:
             notes.append(int(note[2][5:]))
-        
+            
     return notes
     
 
 def main():
-    print(read_midi(FILENAME))
+    print(read_midi(FILENAME, 1))
 
 if __name__ == "__main__":
     main()
