@@ -1,12 +1,35 @@
 
 
-import soundfile as sf
 import numpy as np
+import random
+
+def generate_random_boolean(probability_true):
+    return random.random() < probability_true
+
+def binary_vector(prob_vector):
+    bi_vector = np.zeros_like(prob_vector)
+    summa = 1
+    for x in range(len(bi_vector)):
+        if x != len(bi_vector) - 1:
+            if generate_random_boolean(prob_vector[x] / summa):
+                bi_vector[x] = 1
+                bi_vector[x+1:] = [0] * (len(bi_vector) - x - 1)
+                break
+            else:
+                bi_vector[x] = 0
+                summa -= prob_vector[x]
+        else:
+            bi_vector[x] = 1
+    print(bi_vector[:, np.newaxis])  # Add np.newaxis to ensure column vector
+    return bi_vector[:, np.newaxis]
+
+
 
 def markov(x: np.ndarray, P: np.ndarray):
     """Utför formeln för markovkedjan. Tar in ett x_k och returnerar ett x_(k+1) med
     matrisen P."""
-    return P @ x
+    return np.dot(P, x).reshape(-1, 1)
+
 
 def main():
     # Storleken på matrisen. Vektorerna kommer ha storleken COL. 
@@ -32,10 +55,10 @@ def main():
     
     #Testa 10000 iterationer av markov för att se att x konvergerar mot något
     x = x0
-    lista_av_toner=[]
+    lista_av_sannolikhetsvektorer=[]
     for i in range(10000):
         x = markov(x, P)
-        lista_av_toner.append(x)
+        lista_av_sannolikhetsvektorer.append(x)
         if i >= 10000-5:
             print(x[85:], end="\n--------\n") 
     
@@ -43,7 +66,11 @@ def main():
     # det är svårt att lösa ekvationssystem med mer än en lösning med numpy...
     #q = np.linalg.solve(P - np.eye(ROW, COL), np.zeros((COL, 1)))
     #print(q[85:])
+    lista_av_toner=[]
+    for x in range(len(lista_av_sannolikhetsvektorer)):
+        lista_av_toner.append(binary_vector(lista_av_sannolikhetsvektorer[x]))
     
+    print(lista_av_toner)
 if __name__ == "__main__":
     main()
 
