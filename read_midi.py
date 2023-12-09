@@ -1,6 +1,7 @@
 import midiutil.MidiFile
 import mido as m
 from enum import Enum
+import numpy as np
 
 FILE_PATH = "christmas_songs/"
 
@@ -30,7 +31,6 @@ def read_midi(filename: str, track_nr: int) -> list[int]:
             notes.append(note)
             
     return notes
-    
 
 def main():
     for filename, track in FILES.items():
