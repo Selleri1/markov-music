@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../midi-miner/.git/branches"
+		},
+		{
+			"path": "../midi-miner/.git/hooks"
+		},
+		{
+			"path": "../midi-miner/.git/info"
+		},
+		{
+			"path": "../midi-miner/.git/logs"
+		},
+		{
+			"path": "../midi-miner/.git/objects"
+		},
+		{
+			"path": "../midi-miner/.git/refs"
+		}
+	]
+}
