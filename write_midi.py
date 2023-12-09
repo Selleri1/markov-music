@@ -1,10 +1,12 @@
 from midiutil import MIDIFile
 
 
+notes = [60, 62, 64, 65, 67, 69, 71, 73]
+
 #Create MIDI object
 mf = MIDIFile(1)
 
-#only one track
+#Only one track
 track = 0
 
 #Start at the beginning
@@ -15,11 +17,10 @@ mf.addTempo(track, time, 120)
 
 channel = 0
 volume = 100
+duration = 1
 
-pitch = 60
-time = 0
-duration = 4
-mf.addNote(track, channel, pitch, time, duration, volume)
+for i in range(len(notes)):
+    mf.addNote(track, channel, notes[i], i, duration, volume) 
 
 with open("test.mid", 'wb') as outf:
     mf.writeFile(outf)
