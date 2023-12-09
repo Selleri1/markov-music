@@ -1,12 +1,13 @@
 import numpy as np
 import random
 from read_midi import *
+from write_midi import *
 
 # Intervallet av toner i midi-standarden vi ska använda (det finns 0 till (och inte med) 128)
 # Detta bestämmer storleken på matrisen.
-LOWER_LIMIT = 57#60#0
+LOWER_LIMIT = 0#57#60#0
 # UPPER_LIMIT inkluderas inte
-UPPER_LIMIT = 94#62#128
+UPPER_LIMIT = 128#94#62#128
 
 random.seed(31415)
 np.random.seed(31415)
@@ -155,7 +156,6 @@ def main():
         print(choose_note_stochastic(vec))
         
     # -- Generera toner utifrån alla jullåtar -- 
-    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS':")
     songs = read_all(CHRISTMAS_SONGS)
     
     mat = make_prob_matrix(songs)
@@ -164,10 +164,14 @@ def main():
     start_vec = np.zeros((mat.shape[0]))
     start_vec[0] = 1
     
+    notes = []
     vec = start_vec
-    for _ in range(10):
+    for _ in range(20):
         vec = markov(vec, mat)
-        print(choose_note_stochastic(vec))
+        notes.append(choose_note_stochastic(vec))
+        
+    write_notes(notes, 1200, 1, "Markov Christmas music", "christmas_markov.mid")
+    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS' skrevs till 'christmas_markov.mid'.")
         
     
     
