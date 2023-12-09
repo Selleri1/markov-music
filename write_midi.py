@@ -10,7 +10,7 @@ def write_notes(notes, tempo, duration, track_name, file_name):
     channel = 0
     volume = 100
     for i in range(len(notes)):
-        mf.addNote(track, channel, notes[i], i, duration, volume)       #Adds all notes after eachother in order of list
+        mf.addNote(track, channel, notes[i], i/10, duration, volume)       #Adds all notes after eachother in order of list
     
     with open(file_name, 'wb') as outf:         #Writes to file 
         mf.writeFile(outf)
