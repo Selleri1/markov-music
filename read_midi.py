@@ -25,7 +25,11 @@ CHRISTMAS_SONGS = {
     FILE_PATH + "SantaClausIsComingToTown.mid": 1,
     FILE_PATH + "Christmas_Carols_-_White_Christmas.mid": 7,
     FILE_PATH + "Jose_Feliciano_-_Feliz_Navidad.mid": 1,
-    FILE_PATH + "Christmas_Carols_-_Rocking_Around_The_Christmas_Tree.mid": 5,
+    FILE_PATH + "Christmas_Carols_-_Rockin_Around_The_Christmas_Tree.mid": 5,
+    FILE_PATH + "Christmas_Carols_-_Rudolph_The_Red_Nosed_Reindeer.mid": 4,
+    FILE_PATH + "Christmas_Carols_-_Little_Drummer_Boy.mid": 5,
+    FILE_PATH + "Mariah_Carey_-_All_I_Want_For_Christmas_Is_You.mid": 5,
+    FILE_PATH + "Christmas_Carols_-_The_Night_Before_Christmas.mid": 6,
 }
 
 def read_midi(filename: str, track_nr: int) -> list[int]:
