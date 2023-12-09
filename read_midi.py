@@ -9,6 +9,16 @@ FILE_PATH = "christmas_songs/"
 FILES = {
     "chesnuts.mid": 1,
     "holy_night.mid": 1,
+    "silent_night.mid": 0,
+    "we_wish_you.mid": 0,
+    "joy_to_the_world.mid": 2,
+    "jingle_bell": 2,
+    "have_yourself" : 3,
+    "deck_the_halls": 1,
+    "rudolf": 0,
+    "let_it_snow": 0,
+    "last_christmas": 0,
+    #"carol_of_the_bells": ?
 }
 
 def read_midi(filename: str, track_nr: int) -> list[int]:
