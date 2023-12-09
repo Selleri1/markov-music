@@ -7,18 +7,18 @@ FILE_PATH = "christmas_songs/"
 
 # Filnamn och vilket track som är melodin i respektive fil
 FILES = {
-    "chesnuts.mid": 1,
-    "holy_night.mid": 1,
-    "silent_night.mid": 0,
-    "we_wish_you.mid": 0,
-    "joy_to_the_world.mid": 2,
-    "jingle_bell": 2,
-    "have_yourself" : 3,
-    "deck_the_halls": 1,
-    "rudolf": 0,
-    "let_it_snow": 0,
-    "last_christmas": 0,
-    #"carol_of_the_bells": ?
+    FILE_PATH + "chesnuts.mid": 1,
+    FILE_PATH + "holy_night.mid": 1,
+    FILE_PATH + "silent_night.mid": 0,
+    FILE_PATH + "we_wish_you.mid": 0,
+    FILE_PATH + "joy_to_the_world.mid": 2,
+    FILE_PATH + "jingle_bell.mid": 2,
+    FILE_PATH + "have_yourself.mid" : 3,
+    FILE_PATH + "deck_the_halls.mid": 1,
+    FILE_PATH + "rudolf.mid": 0,
+    FILE_PATH + "let_it_snow.mid": 0,
+    FILE_PATH + "last_christmas.mid": 0,
+    # FILE_PATH + "carol_of_the_bells": ?
 }
 
 def read_midi(filename: str, track_nr: int) -> list[int]:
@@ -42,9 +42,12 @@ def read_midi(filename: str, track_nr: int) -> list[int]:
             
     return notes
 
+def read_all(files: dict[str, int]) -> list[list[int]]:
+    """Läser alla filer i 'files' och returnerar som en lista av listor."""
+    return [read_midi(filename, track_nr) for filename, track_nr in files.items()]
+
 def main():
-    for filename, track in FILES.items():
-        print(read_midi(FILE_PATH + filename, track))
+    print(read_all(FILES))
 
 if __name__ == "__main__":
     main()
