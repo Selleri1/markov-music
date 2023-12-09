@@ -131,12 +131,20 @@ def test():
         
     print(make_prob_matrix([60, 61, 61, 60, 61]))
     
+def choose_note_stochastic(prob_vec: np.ndarray) -> int:
+    """Väljer en ut ton slumpmässigt (intervallet är LOWER_LIMIT till UPPER_LIMIT)
+    enligt sannolikhetsvektorn 'prob_vec'."""
+    return np.random.choice(np.arange(LOWER_LIMIT, UPPER_LIMIT), p=prob_vec)
+
 def main():
+    # -- Generera toner utifrån en låt --
     print("Genererade toner utifrån låten chesnuts roasting on an open fire:")
-    chesnuts = read_midi(FILE_PATH + "chesnuts.mid", FILES["chesnuts.mid"])
+    chesnuts = read_midi(FILE_PATH + "chesnuts.mid", CHRISTMAS_SONGS[FILE_PATH + "chesnuts.mid"])
     
     chesnuts_mat = make_prob_matrix([chesnuts])
     
+
+    # Gör en godtycklig startvektor
     start_vec = np.zeros((chesnuts_mat.shape[0]))
     start_vec[4] = 1
     
@@ -144,7 +152,23 @@ def main():
     for _ in range(10):
         vec = markov(vec, chesnuts_mat)
         # Välj en ton slumpmässigt enligt sannolikhetsvektorn
-        print(np.random.choice(np.arange(LOWER_LIMIT, UPPER_LIMIT), p=vec))
+        print(choose_note_stochastic(vec))
+        
+    # -- Generera toner utifrån alla jullåtar -- 
+    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS':")
+    songs = read_all(CHRISTMAS_SONGS)
+    
+    mat = make_prob_matrix(songs)
+    
+    # Gör en godtycklig startvektor
+    start_vec = np.zeros((mat.shape[0]))
+    start_vec[0] = 1
+    
+    vec = start_vec
+    for _ in range(10):
+        vec = markov(vec, mat)
+        print(choose_note_stochastic(vec))
+        
     
     
 if __name__ == "__main__":

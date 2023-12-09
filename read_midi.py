@@ -6,7 +6,7 @@ import numpy as np
 FILE_PATH = "christmas_songs/"
 
 # Filnamn och vilket track som är melodin i respektive fil
-FILES = {
+CHRISTMAS_SONGS = {
     FILE_PATH + "chesnuts.mid": 1,
     FILE_PATH + "holy_night.mid": 1,
     FILE_PATH + "silent_night.mid": 0,
@@ -47,7 +47,7 @@ def read_all(files: dict[str, int]) -> list[list[int]]:
     return [read_midi(filename, track_nr) for filename, track_nr in files.items()]
 
 def main():
-    print(read_all(FILES))
+    print(read_all(CHRISTMAS_SONGS))
 
 if __name__ == "__main__":
     main()
