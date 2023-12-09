@@ -40,38 +40,41 @@ def markov(x: np.ndarray, P: np.ndarray) -> np.ndarray:
     return P @ x
 
     
-def make_prob_matrix(song_as_list: list[int]) -> np.ndarray:
-    """Tar en lista som är alla toner i en sång (en sådan genererad av read_midi.read_midi) och returnerar
-    en matris med sannolikheterna att en viss ton leder till en annan. Matrisen har antalet toner som storlek."""
+def make_prob_matrix(list_of_songs: list[list[int]]) -> np.ndarray:
+    """Tar en lista av listor som innehåller alla toner i en sång (en sådan genererad av read_midi.read_midi) och returnerar
+    en matris med sannolikheterna att en viss ton leder till en annan. Matrisen har antalet toner (UPPER_LIMIT-LOWER_LIMIT) som storlek."""
     num_notes = UPPER_LIMIT-LOWER_LIMIT
-    matrix = np.empty(shape=(num_notes, num_notes))
+    matrix = np.zeros(shape=(num_notes, num_notes))
     # Loopa igenom alla möjliga toner
     for note in range(LOWER_LIMIT, UPPER_LIMIT):
-        song = song_as_list.copy()
         # Listan här räknar hur många gånger varje ton förekommer efter 'note'
         # Om tonen 50 kom efter 'note' 5 gånger så blir note_occurances[50] == 5
         # Om LOWER_LIMIT är 5 så kommer note_occurances[0] att motsvara ton 5
         note_occurances = [0 for _ in range(num_notes)]
-        while True:
-            try:
-                # Hitta nästa gång 'note' framkommer i listan
-                note_index = song.index(note)
-            except ValueError:
-                # Om song.index skickar ValueError så fanns inte tonen i listan. Avsluta while-loopen
-                break
-            
-            if note_index == len(song) - 1:
-                # Om det var sista tonen i sången
-                break
-            
-            song.pop(note_index)
-            # Nu är den tonen som kom efter på index 'note_index'
-            note_occurances[song[note_index] - LOWER_LIMIT] += 1
-            
+        
+        # Loopa igenom alla sånger som vi har skickat in
+        for song_list in list_of_songs:
+            song = song_list.copy()
+            while True:
+                try:
+                    # Hitta nästa gång 'note' framkommer i listan
+                    note_index = song.index(note)
+                except ValueError:
+                    # Om song.index skickar ValueError så fanns inte tonen i listan. Avsluta while-loopen
+                    break
+                
+                if note_index == len(song) - 1:
+                    # Om det var sista tonen i sången
+                    break
+                
+                song.pop(note_index)
+                # Nu är den tonen som kom efter på index 'note_index'
+                note_occurances[song[note_index] - LOWER_LIMIT] += 1
+                
         if sum(note_occurances) == 0:
-            # Om 'note' aldrig fanns i sången kommer listan vara tom.
+            # Om 'note' aldrig fanns i någon av sångerna kommer listan vara tom.
             # Gör i så fall en sannolikhetsmatris med samma sannolikhet för allt.
-            # Osäker på hur vi ska göra här.
+            # Osäker på om det här är en bra lösning.
             prob_vector = np.ones(num_notes)
         else:
             prob_vector = np.array(note_occurances)
@@ -132,7 +135,7 @@ def main():
     print("Genererade toner utifrån låten chesnuts roasting on an open fire:")
     chesnuts = read_midi(FILE_PATH + "chesnuts.mid", FILES["chesnuts.mid"])
     
-    chesnuts_mat = make_prob_matrix(chesnuts)
+    chesnuts_mat = make_prob_matrix([chesnuts])
     
     start_vec = np.zeros((chesnuts_mat.shape[0]))
     start_vec[4] = 1
