@@ -1,11 +1,12 @@
 import numpy as np
 import random
+from read_midi import *
 
 # Intervallet av toner i midi-standarden vi ska använda (det finns 0 till (och inte med) 128)
 # Detta bestämmer storleken på matrisen.
-LOWER_LIMIT = 60#0
+LOWER_LIMIT = 57#60#0
 # UPPER_LIMIT inkluderas inte
-UPPER_LIMIT = 62#128
+UPPER_LIMIT = 94#62#128
 
 def generate_random_boolean(probability_true):
     return random.random() < probability_true
@@ -38,7 +39,7 @@ def markov(x: np.ndarray, P: np.ndarray) -> np.ndarray:
     
 def make_prob_matrix(song_as_list: list[int]) -> np.ndarray:
     """Tar en lista som är alla toner i en sång (en sådan genererad av read_midi.read_midi) och returnerar
-    en matris med sannolikheterna att en viss ton leder till en annan. Matrisen har storleken"""
+    en matris med sannolikheterna att en viss ton leder till en annan. Matrisen har antalet toner som storlek."""
     num_notes = UPPER_LIMIT-LOWER_LIMIT
     matrix = np.empty(shape=(num_notes, num_notes))
     # Loopa igenom alla möjliga toner
@@ -85,7 +86,8 @@ def make_col_sum_one(array: np.ndarray) -> np.ndarray:
     return array/array.sum(axis=0,keepdims=1)
         
 
-def main():
+def test():
+    """Gamla main"""
     # Storleken på matrisen. Vektorerna kommer ha storleken COL. 
     COL = 88
     ROW = 88
@@ -122,6 +124,22 @@ def main():
         lista_av_toner.append(binary_vector(lista_av_sannolikhetsvektorer[x]))
         
     print(make_prob_matrix([60, 61, 61, 60, 61]))
+    
+def main():
+    print("Genererade toner utifrån låten chesnuts roasting on an open fire:")
+    chesnuts = read_midi(FILE_PATH + "chesnuts.mid", FILES["chesnuts.mid"])
+    
+    chesnuts_mat = make_prob_matrix(chesnuts)
+    
+    start_vec = np.zeros((chesnuts_mat.shape[0]))
+    start_vec[4] = 1
+    
+    vec = start_vec
+    for _ in range(10):
+        vec = markov(vec, chesnuts_mat)
+        # Välj en ton slumpmässigt enligt sannolikhetsvektorn
+        print(np.random.choice(np.arange(LOWER_LIMIT, UPPER_LIMIT), p=vec))
+    
     
 if __name__ == "__main__":
     main()
