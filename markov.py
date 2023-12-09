@@ -8,6 +8,9 @@ LOWER_LIMIT = 57#60#0
 # UPPER_LIMIT inkluderas inte
 UPPER_LIMIT = 94#62#128
 
+random.seed(31415)
+np.random.seed(31415)
+
 def generate_random_boolean(probability_true):
     return random.random() < probability_true
 
