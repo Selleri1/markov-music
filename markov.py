@@ -162,11 +162,11 @@ def main():
     
     # Gör en godtycklig startvektor
     start_vec = np.zeros((mat.shape[0]))
-    start_vec[0] = 1
+    start_vec[60] = 1
     
     notes = []
     vec = start_vec
-    for _ in range(20):
+    for _ in range(40):
         vec = markov(vec, mat)
         notes.append(choose_note_stochastic(vec))
         
