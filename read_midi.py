@@ -1,7 +1,4 @@
-import midiutil.MidiFile
 import mido as m
-from enum import Enum
-import numpy as np
 from write_midi import *
 
 FILE_PATH = "christmas_songs/"

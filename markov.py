@@ -89,6 +89,7 @@ def make_prob_matrix(list_of_songs: list[list[int]]) -> np.ndarray:
         
     
 def make_col_sum_one(array: np.ndarray) -> np.ndarray:
+    """Diverderar kolumnen så att kolumnsumman är 1"""
     # Dividera varje kolonn med dess summa.
     # Källa: https://stackoverflow.com/questions/43644320/how-to-make-numpy-array-column-sum-up-to-1
     return array/array.sum(axis=0,keepdims=1)
@@ -160,9 +161,9 @@ def main():
     print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, skrevs till 'christmas_markov_trans.mid'.")
         
     plt.imshow(mat, interpolation="none")
+    plt.xlim([40, 90])
+    plt.ylim([90, 40])
     plt.show()
     
 if __name__ == "__main__":
     main()
-
-# (7744x88) andra ordningen?
