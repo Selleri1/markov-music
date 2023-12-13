@@ -2,6 +2,7 @@ import midiutil.MidiFile
 import mido as m
 from enum import Enum
 import numpy as np
+from write_midi import *
 
 FILE_PATH = "christmas_songs/"
 
@@ -105,7 +106,11 @@ def read_all_transposed(files: dict[str, int]) -> list[list[int]]:
 def main():
     #print(read_all(CHRISTMAS_SONGS))
     #print(read_midi(FILE_PATH+"holy_night.mid", 1))
-    print(find_longest_note(CHRISTMAS_SONGS))
+    #print(find_longest_note(CHRISTMAS_SONGS))
+    write_notes(read_midi(FILE_PATH+"jingle_bell.mid", 2), 120, 1, "test", "not_trans_test.mid")
+    write_notes(transpose_to_c(read_midi(FILE_PATH+"jingle_bell.mid", 2), "G"), 120, 1, "test", "trans_test.mid")
+    
+    
 
 if __name__ == "__main__":
     main()
