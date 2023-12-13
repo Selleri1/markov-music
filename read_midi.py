@@ -91,7 +91,7 @@ def read_rhythm(filename: str, track_nr: int) -> list[int]:
                     if counter%2:
                         durations.append(message.time)
                     counter += 1
-    print(list(map(lambda notelength: (notelength/beats_per_minute), durations)))
+    #print(list(map(lambda notelength: (notelength/beats_per_minute), durations)))
     return list(map(lambda notelength: (notelength/beats_per_minute), durations))
 
 def read_all(files: dict[str, tuple[int, str]]) -> list[list[int]]:
@@ -102,7 +102,7 @@ def read_all_transposed(files: dict[str, tuple[int, str]]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor med låtarna transponerade nedåt till tonarten C."""
     return [transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]) for filename, track_and_key in files.items()]
 
-def read_all_transposed_rythm(files: dict[str, tuple[int, str]]) -> tuple[list[list[int]], list[list[float]]]:
+def read_all_transposed_rhythm(files: dict[str, tuple[int, str]]) -> tuple[list[list[int]], list[list[float]]]:
     """Läser alla filer i 'files' och returnerar dels en lista av listor med noterna i varje låt och dels en lista av listor med rytmerna i varje låt.
     Låtarna är transponerade till tonarten C."""
     songs_notes = []
@@ -161,7 +161,8 @@ def test():
     #print(find_longest_note(CHRISTMAS_SONGS))
     # write_notes(read_midi(FILE_PATH+"jingle_bell.mid", 2), 120, 1, "test", "not_trans_test.mid")
     # write_notes(transpose_to_c(read_midi(FILE_PATH+"jingle_bell.mid", 2), "G"), 120, 1, "test", "trans_test.mid")
-    read_rhythm(FILE_PATH+"SantaBaby.mid", 1)
+    #read_rhythm(FILE_PATH+"SantaBaby.mid", 1)
+    print(read_all_transposed_rhythm(CHRISTMAS_SONGS))
 
 if __name__ == "__main__":
     test()

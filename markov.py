@@ -139,7 +139,7 @@ def main():
     output_file = "christmas_markov_trans.mid"
     # -- Generera toner utifrån alla jullåtar --
     # TRANSPONERADE NEDÅT TILL TONARTEN C 
-    songs_notes, songs_rythm = read_all_transposed_rythm(song_dict)
+    songs_notes, songs_rythm = read_all_transposed_rhythm(song_dict)
     
     
     note_mat = make_prob_matrix(songs_notes)
