@@ -1,5 +1,6 @@
 import numpy as np
 import random
+from matplotlib import pyplot as plt
 from read_midi import *
 from write_midi import *
 
@@ -144,8 +145,9 @@ def main():
     songs = read_all(CHRISTMAS_SONGS)
     
     mat = make_prob_matrix(songs)
-    
-    # Gör en godtycklig startvektor
+
+    # Skapa startvektor med värdet för tonen 'start_note'
+    # satt till 1
     start_vec = np.zeros((mat.shape[0]))
     start_vec[start_note - LOWER_LIMIT] = 1
     
@@ -158,7 +160,8 @@ def main():
     write_notes(notes, 1200, 1, "Markov Christmas music", "christmas_markov.mid")
     print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS' skrevs till 'christmas_markov.mid'.")
         
-    
+    plt.imshow(mat, interpolation="none")
+    plt.show()
     
 if __name__ == "__main__":
     main()
