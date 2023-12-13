@@ -139,7 +139,10 @@ def choose_note_stochastic(prob_vec: np.ndarray) -> int:
     return np.random.choice(np.arange(LOWER_LIMIT, UPPER_LIMIT), p=prob_vec)
 
 def main():
+<<<<<<< HEAD
     start_note = 60
+=======
+>>>>>>> e08f1e0dab4b13381624832b6b3b1a4d9b405b42
     # -- Generera toner utifrån alla jullåtar --
     # TRANSPONERADE NEDÅT TILL TONARTEN C 
     songs = read_all_transposed(CHRISTMAS_SONGS)
