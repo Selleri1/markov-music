@@ -128,7 +128,7 @@ def find_hi_lo_pitch(files: dict[str: int]) -> int:
 
     return lowest, highest
 
-def main():
+def test():
     #print(read_all(CHRISTMAS_SONGS))
     #print(read_midi(FILE_PATH+"holy_night.mid", 1))
     #print(find_longest_note(CHRISTMAS_SONGS))
@@ -138,4 +138,4 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    test()
