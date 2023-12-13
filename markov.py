@@ -14,26 +14,26 @@ random.seed(31415)
 np.random.seed(31415)
 
 def generate_random_boolean(probability_true):
+    """denna funktion returnerar sant (<argumentet>*100)% av tiden"""
     return random.random() < probability_true
 
 def binary_vector(prob_vector):
+    """skapar en vektor med en etta och resten nollor utifrån en sannolikhetsvektor"""
     bi_vector=[]
-    for y in range(len(prob_vector)):
+    for y in range(len(prob_vector)):   #vektorn är från början en lista av dellistor där varje dellista har ett element. rader 23-24 mergar helt enkelt dessa dellistor till en lista.
         bi_vector.append(prob_vector[y][0])
-    print(bi_vector[0])
-    summa=1
-    for x in range(len(bi_vector)):
-        if x!=len(bi_vector)-1:
-            if generate_random_boolean(bi_vector[x]/summa):
-                bi_vector[x]=1
-                bi_vector[x+1:] = [0] * (len(bi_vector)-x-1)
-                break
+    summa=1 #används som en korrigerande variabel som förklaras senare.
+    for x in range(len(bi_vector)): #går igenom varje elemant i vektorn 
+        if x!=len(bi_vector)-1: #är alltid sant utom när den kollar sista elemantet i vektorn
+            if generate_random_boolean(bi_vector[x]/summa): #utvärderar sannolikheten ett element är sant
+                bi_vector[x]=1 
+                bi_vector[x+1:] = [0] * (len(bi_vector)-x-1) #sätter alla följande element till 0
+                break 
             else:
-                bi_vector[x]=0
-                summa-=bi_vector[x]
+                bi_vector[x]=0 
+                summa-=bi_vector[x] #eftersom sannolikheten att den ens kollar det andra elementet i listan [0.6, 0.2, 0.2] kommer vara ((1-0.6)*100)%. för att det andra elementet ska bli en etta 20% av gångerna så tar man alltså (0.4*0.2/0.4) 
         else:
-            bi_vector[x]=1
-    print(bi_vector)
+            bi_vector[x]=1 #alla tidigare element har satts till noll, alltså blir det här elementet en etta.
     return bi_vector
 
 def markov(x: np.ndarray, P: np.ndarray) -> np.ndarray:
