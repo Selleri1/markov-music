@@ -71,33 +71,28 @@ def read_midi(filename: str, track_nr: int) -> list[int]:
 def read_rhythm(filename: str, track_nr: int) -> list[int]:
     """Öppnar midi-filen 'filenam' och tar fram rytmen ur track nr 'track_nr'.
     Returnerar en lista med duration för varje ton som ent """
-    try:
-        mid = m.MidiFile(filename)
-    except IOError:
-        print("Kunde inte öppna MIDI-filen.")
-        return None
+    mid = m.MidiFile(filename)
 
     tempo = [message for message in mid if message.type == 'set_tempo']
-    tempo_times_time_duration = [meta_message.tempo*meta_message.time for meta_message in tempo]
-
-    beats_per_minute = 6000000 / (sum(tempo_times_time_duration) / len(tempo_times_time_duration))
-
+    tempo_times_time_duration = [meta_message.tempo for meta_message in tempo]
+    #tempo_time = [meta_message.time for meta_message in tempo]
+    #beats_per_minute = (60000000 * sum(tempo_time)) / (sum(tempo_times_time_duration) / len(tempo_times_time_duration))
+    beats_per_minute = 60000000/tempo_times_time_duration[0]
     durations = []
-    for message in mid.tracks[track_nr]:
-        if type(message) != m.Message:
-            continue
-        
-        note_event = message.dict()
-
+    counter = 0
     for message in mid.tracks[track_nr]:
             if type(message) != m.Message:
                 continue
-        
             note_event = message.dict()        
-            if note_event["type"] == "note_off":
-                durations.append(message.time)
-    print(list(map(lambda notelength: 1/(notelength/beats_per_minute), durations)))
-    return list(map(lambda notelength: 1/(notelength/beats_per_minute), durations))
+            if note_event["type"] == "note_off" or note_event["type"] == "note_on":
+                if note_event["type"] == "note_off" and message.time != 0.0:
+                    durations.append(message.time)
+                elif note_event["type"] == "note_on" and message.time != 0.0:
+                    if counter%2:
+                        durations.append(message.time)
+                    counter += 1
+    print(list(map(lambda notelength: (notelength/beats_per_minute), durations)))
+    return list(map(lambda notelength: (notelength/beats_per_minute), durations))
 
 def read_all(files: dict[str, tuple[int, str]]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor."""
@@ -166,7 +161,7 @@ def test():
     #print(find_longest_note(CHRISTMAS_SONGS))
     # write_notes(read_midi(FILE_PATH+"jingle_bell.mid", 2), 120, 1, "test", "not_trans_test.mid")
     # write_notes(transpose_to_c(read_midi(FILE_PATH+"jingle_bell.mid", 2), "G"), 120, 1, "test", "trans_test.mid")
-    read_rhythm(FILE_PATH+"jingle_bell.mid", 2)
+    read_rhythm(FILE_PATH+"SantaBaby.mid", 1)
 
 if __name__ == "__main__":
     test()
