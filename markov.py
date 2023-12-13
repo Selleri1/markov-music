@@ -157,7 +157,7 @@ def main():
         vec = markov(vec, mat)
         notes.append(choose_note_stochastic(vec))
         
-    write_notes(notes, 1200, 1, "Markov Christmas music", "christmas_markov.mid")
+    write_notes(notes, 240, 1, "Markov Christmas music", "christmas_markov.mid")
     print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS' skrevs till 'christmas_markov.mid'.")
         
     plt.imshow(mat, interpolation="none")

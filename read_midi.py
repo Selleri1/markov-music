@@ -5,7 +5,7 @@ import numpy as np
 
 FILE_PATH = "christmas_songs/"
 
-# Filnamn och vilket track som är melodin i respektive fil
+# Filnamn och vilket track samt tonart som melodin är i i respektive fil
 CHRISTMAS_SONGS = {
     FILE_PATH + "chesnuts.mid": (1, "F"),
     FILE_PATH + "holy_night.mid": (1, "C"),
@@ -31,6 +31,21 @@ CHRISTMAS_SONGS = {
     FILE_PATH + "Mariah_Carey_-_All_I_Want_For_Christmas_Is_You.mid": (5, "G"),
     FILE_PATH + "Christmas_Carols_-_The_Night_Before_Christmas.mid": (6, "C"),
 }
+
+# Hur mycket melodin ska transponeras beroende på vilken tonart den är i
+TRANSPOSE_TO_C = {
+    "C" : 0,
+    "D" : -2,
+    "E" : -4,
+    "F" : -5,
+    "G" : -7,
+    "A" : -9,
+    "B" : -11,
+}
+
+def transpose_to_c(song: list[int], key: str) -> list[int]:
+    transpose = TRANSPOSE_TO_C[key]
+    return [note + transpose for note in song]
 
 def read_midi(filename: str, track_nr: int) -> list[int]:
     """Öppnar midi-filen 'filename' och tar fram tonerna ur track nr 'track_nr'.
