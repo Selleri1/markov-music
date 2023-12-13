@@ -146,8 +146,7 @@ def main():
     
     mat = make_prob_matrix(songs)
 
-    # Skapa startvektor med värdet för tonen 'start_note'
-    # satt till 1
+    # Skapa startvektor med värdet för tonen 'start_note' satt till 1
     start_vec = np.zeros((mat.shape[0]))
     start_vec[start_note - LOWER_LIMIT] = 1
     
