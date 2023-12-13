@@ -84,6 +84,28 @@ def find_longest_note(files: dict[str: int]) -> int:
     return longest
 
 
+def find_hi_lo_pitch(files: dict[str: int]) -> int:
+    for file, track_nr in files.items():
+        mid = m.MidiFile(file)
+
+        lowest = 127
+        highest = 0
+
+        for message in mid.tracks[track_nr]:
+            if type(message) != m.Message:
+                continue
+
+            note_event = message.dict()
+            if note_event["type"] == "pitch" and note_event["velocity"] != 0:
+                if note_event["pitch"] < lowest:
+                    lowest = note_event["pitch"]
+
+                if note_event["pitch"] > highest:
+                    highest = note_event["pitch"]
+
+
+    return lowest, highest
+
 def main():
     print(read_all(CHRISTMAS_SONGS))
 
