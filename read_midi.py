@@ -66,10 +66,26 @@ def read_midi(filename: str, track_nr: int) -> list[int]:
             
     return notes
 
-def read_rythm(filename: str, track_nr: int) -> list[int]:
+def read_rhythm(filename: str, track_nr: int) -> list[int]:
     """Öppnar midi-filen 'filenam' och tar fram rytmen ur track nr 'track_nr'.
     Returnerar en lista med duration för varje ton som ent """
-    pass
+    try:
+        mid = m.MidiFile(filename)
+    except IOError:
+        print("Kunde inte öppna MIDI-filen.")
+        return None
+
+    durations = []
+
+    for message in mid.tracks[track_nr]:
+            if type(message) != m.Message:
+                continue
+        
+            note_event = message.dict()        
+            if note_event["type"] == "note_off":
+                    durations.append(message.time)
+    print(durations)
+    return durations
 
 def read_all(files: dict[str, int]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor."""
@@ -121,8 +137,7 @@ def test():
     #print(find_longest_note(CHRISTMAS_SONGS))
     write_notes(read_midi(FILE_PATH+"jingle_bell.mid", 2), 120, 1, "test", "not_trans_test.mid")
     write_notes(transpose_to_c(read_midi(FILE_PATH+"jingle_bell.mid", 2), "G"), 120, 1, "test", "trans_test.mid")
-    
-    
+    read_rhythm(FILE_PATH+"jingle_bell.mid", 2)
 
 if __name__ == "__main__":
     test()
