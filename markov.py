@@ -139,10 +139,10 @@ def choose_note_stochastic(prob_vec: np.ndarray) -> int:
     return np.random.choice(np.arange(LOWER_LIMIT, UPPER_LIMIT), p=prob_vec)
 
 def main():
-    # -- Generera toner utifrån alla jullåtar -- 
     start_note = 60
-    
-    songs = read_all(CHRISTMAS_SONGS)
+    # -- Generera toner utifrån alla jullåtar --
+    # TRANSPONERADE NEDÅT TILL TONARTEN C 
+    songs = read_all_transposed(CHRISTMAS_SONGS)
     
     mat = make_prob_matrix(songs)
 
@@ -157,8 +157,8 @@ def main():
         vec = markov(vec, mat)
         notes.append(choose_note_stochastic(vec))
         
-    write_notes(notes, 240, 1, "Markov Christmas music", "christmas_markov.mid")
-    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS' skrevs till 'christmas_markov.mid'.")
+    write_notes(notes, 240, 1, "Markov Christmas music", "christmas_markov_trans.mid")
+    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, skrevs till 'christmas_markov_trans.mid'.")
         
     plt.imshow(mat, interpolation="none")
     plt.show()

@@ -57,7 +57,6 @@ def read_midi(filename: str, track_nr: int) -> list[int]:
     
     # Varje track består av messages. Gå igenom alla messages i track nr 'track_nr'
     for message in mid.tracks[track_nr]:
-        print(message)
         # Behåll bara meddelanden av typen m.Message (de som innehåller info om vilka toner som ska spelas)
         if type(message) != m.Message:
             continue
@@ -97,7 +96,11 @@ def find_longest_note(files: dict[str: int]) -> int:
 
 def read_all(files: dict[str, int]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor."""
-    return [read_midi(filename, track_nr) for filename, track_nr in files.items()]
+    return [read_midi(filename, track_and_key[0]) for filename, track_and_key in files.items()]
+
+def read_all_transposed(files: dict[str, int]) -> list[list[int]]:
+    """Läser alla filer i 'files' och returnerar som en lista av listor med låtarna transponerade nedåt till tonarten C."""
+    return [transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]) for filename, track_and_key in files.items()]
 
 def main():
     #print(read_all(CHRISTMAS_SONGS))
