@@ -138,25 +138,9 @@ def choose_note_stochastic(prob_vec: np.ndarray) -> int:
     return np.random.choice(np.arange(LOWER_LIMIT, UPPER_LIMIT), p=prob_vec)
 
 def main():
-    # -- Generera toner utifrån en låt --
-    print("Genererade toner utifrån låten chesnuts roasting on an open fire:")
-    chesnuts = read_midi(FILE_PATH + "chesnuts.mid", CHRISTMAS_SONGS[FILE_PATH + "chesnuts.mid"])
-    
-    chesnuts_mat = make_prob_matrix([chesnuts])
-    
-
-    # Gör en godtycklig startvektor
-    start_vec = np.zeros((chesnuts_mat.shape[0]))
-    start_vec[4] = 1
-    
-    vec = start_vec
-    for _ in range(10):
-        vec = markov(vec, chesnuts_mat)
-        # Välj en ton slumpmässigt enligt sannolikhetsvektorn
-        print(choose_note_stochastic(vec))
-        
-    # -- Generera toner utifrån alla jullåtar -- 
-    songs = read_all(CHRISTMAS_SONGS)
+    # -- Generera toner utifrån alla jullåtar --
+    # TRANSPONERADE NEDÅT TILL TONARTEN C 
+    songs = read_all_transposed(CHRISTMAS_SONGS)
     
     mat = make_prob_matrix(songs)
     
@@ -170,8 +154,8 @@ def main():
         vec = markov(vec, mat)
         notes.append(choose_note_stochastic(vec))
         
-    write_notes(notes, 240, 1, "Markov Christmas music", "christmas_markov.mid")
-    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS' skrevs till 'christmas_markov.mid'.")
+    write_notes(notes, 240, 1, "Markov Christmas music", "christmas_markov_trans.mid")
+    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, skrevs till 'christmas_markov_trans.mid'.")
         
     
     
