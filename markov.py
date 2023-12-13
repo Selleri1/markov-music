@@ -160,9 +160,7 @@ def main():
     write_notes(notes, 240, 1, "Markov Christmas music", "christmas_markov_trans.mid")
     print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, skrevs till 'christmas_markov_trans.mid'.")
         
-    plt.imshow(mat, interpolation="none")
-    plt.xlim([40, 90])
-    plt.ylim([90, 40])
+    plt.imshow(mat, interpolation="none", extent= [40, 89, 89, 40])
     plt.show()
     
 if __name__ == "__main__":
