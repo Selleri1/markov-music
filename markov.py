@@ -6,12 +6,12 @@ from write_midi import *
 
 # Intervallet av toner i midi-standarden vi ska använda (det finns 0 till (och inte med) 128)
 # Detta bestämmer storleken på matrisen.
-LOWER_LIMIT = 0#57#60#0
-# UPPER_LIMIT inkluderas inte
-UPPER_LIMIT = 128#94#62#128
+LOWER_LIMIT, UPPER_LIMIT = find_hi_lo_pitch(read_all_transposed(CHRISTMAS_SONGS))
+UPPER_LIMIT += 1
+print(LOWER_LIMIT, UPPER_LIMIT)
 
-random.seed(31415)
-np.random.seed(31415)
+random.seed(314154)
+np.random.seed(314154)
 
 def generate_random_boolean(probability_true):
     return random.random() < probability_true
@@ -59,7 +59,7 @@ def make_prob_matrix(list_of_songs: list[list[int]]) -> np.ndarray:
             song = song_list.copy()
             while True:
                 try:
-                    # Hitta nästa gång 'note' framkommer i listan
+                    # Hitta nästa gång 'note' framkommer i sång-listan
                     note_index = song.index(note)
                 except ValueError:
                     # Om song.index skickar ValueError så fanns inte tonen i listan. Avsluta while-loopen
