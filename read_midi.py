@@ -57,6 +57,33 @@ def read_all(files: dict[str, int]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor."""
     return [read_midi(filename, track_nr) for filename, track_nr in files.items()]
 
+def read_rythm(filename: str, track_nr: int) -> list[int]:
+    """Öppnar midi-filen 'filenam' och tar fram rytmen ur track nr 'track_nr'.
+    Returnerar en lista med duration för varje ton som ent """
+    pass
+
+def find_longest_note(files: dict[str: int]) -> int:
+    for file, track_nr in files.items():
+        mid = m.MidiFile(file)
+        
+        longest = 0
+        
+        for message in mid.tracks[track_nr]:
+            if type(message) != m.Message:
+                continue
+            
+            note_event = message.dict()
+            if note_event["type"] == "note_on" and note_event["velocity"] == 0:
+                if note_event["time"] > longest:
+                    longest = note_event["time"]
+                    
+            if note_event["type"] == "note_off":
+                if note_event["time"] > longest:
+                    longest = note_event["time"]
+                    
+    return longest
+
+
 def main():
     print(read_all(CHRISTMAS_SONGS))
 
