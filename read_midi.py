@@ -107,10 +107,18 @@ def read_all_transposed(files: dict[str, tuple[int, str]]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor med låtarna transponerade nedåt till tonarten C."""
     return [transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]) for filename, track_and_key in files.items()]
 
-def read_all_transposed_rythm(files: dict[str, tuple[int, str]]) -> list[tuple[list[int], list[float]]]:
+def read_all_transposed_rythm(files: dict[str, tuple[int, str]]) -> tuple[list[list[int]], list[list[float]]]:
     """Läser alla filer i 'files' och returnerar en lista av tuples. Varje tuple är en låt transponerad till C och innehåller först listan med toner
     och sedan listan med rytmen."""
-    return [(transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]), read_rhythm(filename, track_and_key[0])) for filename, track_and_key in files.items()]
+    songs_notes = []
+    songs_rythms = []
+    
+    for filename, track_and_key in files.items():
+        songs_notes.append(transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]))
+        songs_rythms.append(read_rhythm(filename, track_and_key[0]))
+        
+    return (songs_notes, songs_rythms)
+
 
 def find_longest_note(files: dict[str: tuple[int, str]]) -> int:
     """Tar ett dictionary med filer och deras information (se CHRISTMAS_SONGS) och returnerar

@@ -139,19 +139,20 @@ def main():
     output_file = "christmas_markov_trans.mid"
     # -- Generera toner utifrån alla jullåtar --
     # TRANSPONERADE NEDÅT TILL TONARTEN C 
-    songs = read_all_transposed(song_dict)
+    songs_notes, songs_rythm = read_all_transposed_rythm(song_dict)
     
-    mat = make_prob_matrix(songs)
+    
+    note_mat = make_prob_matrix(songs_notes)
 
     # Skapa startvektor med värdet för tonen 'start_note' satt till 1
-    start_vec = np.zeros((mat.shape[0]))
+    start_vec = np.zeros((note_mat.shape[0]))
     start_vec[start_note - LOWER_LIMIT] = 1
     
     notes = []
     vec = start_vec
     for _ in range(40):
         # v_(n+1) = P v_n
-        vec = mat @ vec
+        vec = note_mat @ vec
         notes.append(choose_note_stochastic(vec))
         
     write_notes(notes, 240, 1, "Markov Christmas music", output_file)
@@ -159,7 +160,7 @@ def main():
     print(f"Generarad musik utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, med {start_note} som startton, skrevs till '{output_file}'.")
         
     # Visa bild av matrisen
-    plt.imshow(mat, interpolation="none", extent= [LOWER_LIMIT, UPPER_LIMIT, UPPER_LIMIT, LOWER_LIMIT])
+    plt.imshow(note_mat, interpolation="none", extent= [LOWER_LIMIT, UPPER_LIMIT, UPPER_LIMIT, LOWER_LIMIT])
     plt.show()
     
 if __name__ == "__main__":
