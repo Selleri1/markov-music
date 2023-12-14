@@ -1,5 +1,6 @@
 import mido as m
 from write_midi import *
+import numpy as np
 
 FILE_PATH = "christmas_songs/"
 
@@ -75,7 +76,17 @@ def read_rhythm(filename: str, track_nr: int) -> list[int]:
         print("Kunde inte öppna MIDI-filen.")
         return None
 
+    tempo = [message for message in mid if message.type == 'set_tempo']
+    tempo_times_time_duration = [meta_message.tempo*meta_message.time for meta_message in tempo]
+
+    beats_per_minute = 6000000 / (sum(tempo_times_time_duration) / len(tempo_times_time_duration))
+
     durations = []
+    for message in mid.tracks[track_nr]:
+        if type(message) != m.Message:
+            continue
+        
+        note_event = message.dict()
 
     for message in mid.tracks[track_nr]:
             if type(message) != m.Message:
@@ -83,9 +94,9 @@ def read_rhythm(filename: str, track_nr: int) -> list[int]:
         
             note_event = message.dict()        
             if note_event["type"] == "note_off":
-                    durations.append(message.time)
-    print(durations)
-    return durations
+                durations.append(message.time)
+    print(list(map(lambda notelength: 1/(notelength/beats_per_minute), durations)))
+    return list(map(lambda notelength: 1/(notelength/beats_per_minute), durations))
 
 def read_all(files: dict[str, int]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor."""
