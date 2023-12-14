@@ -99,13 +99,18 @@ def read_rhythm(filename: str, track_nr: int) -> list[int]:
     print(list(map(lambda notelength: 1/(notelength/beats_per_minute), durations)))
     return list(map(lambda notelength: 1/(notelength/beats_per_minute), durations))
 
-def read_all(files: dict[str, int]) -> list[list[int]]:
+def read_all(files: dict[str, tuple[int, str]]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor."""
     return [read_midi(filename, track_and_key[0]) for filename, track_and_key in files.items()]
 
-def read_all_transposed(files: dict[str, int]) -> list[list[int]]:
+def read_all_transposed(files: dict[str, tuple[int, str]]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor med låtarna transponerade nedåt till tonarten C."""
     return [transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]) for filename, track_and_key in files.items()]
+
+def read_all_transposed_rythm(files: dict[str, tuple[int, str]]) -> list[tuple[list[int], list[float]]]:
+    """Läser alla filer i 'files' och returnerar en lista av tuples. Varje tuple är en låt transponerad till C och innehåller först listan med toner
+    och sedan listan med rytmen."""
+    return [(transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]), read_rhythm(filename, track_and_key[0])) for filename, track_and_key in files.items()]
 
 def find_longest_note(files: dict[str: tuple[int, str]]) -> int:
     """Tar ett dictionary med filer och deras information (se CHRISTMAS_SONGS) och returnerar
@@ -151,8 +156,8 @@ def test():
     #print(read_all(CHRISTMAS_SONGS))
     #print(read_midi(FILE_PATH+"holy_night.mid", 1))
     #print(find_longest_note(CHRISTMAS_SONGS))
-    write_notes(read_midi(FILE_PATH+"jingle_bell.mid", 2), 120, 1, "test", "not_trans_test.mid")
-    write_notes(transpose_to_c(read_midi(FILE_PATH+"jingle_bell.mid", 2), "G"), 120, 1, "test", "trans_test.mid")
+    # write_notes(read_midi(FILE_PATH+"jingle_bell.mid", 2), 120, 1, "test", "not_trans_test.mid")
+    # write_notes(transpose_to_c(read_midi(FILE_PATH+"jingle_bell.mid", 2), "G"), 120, 1, "test", "trans_test.mid")
     read_rhythm(FILE_PATH+"jingle_bell.mid", 2)
 
 if __name__ == "__main__":

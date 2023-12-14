@@ -150,7 +150,7 @@ def main():
     notes = []
     vec = start_vec
     for _ in range(40):
-        # v_(n+1) = mat v_n
+        # v_(n+1) = P v_n
         vec = mat @ vec
         notes.append(choose_note_stochastic(vec))
         
