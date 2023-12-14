@@ -31,18 +31,19 @@ CHRISTMAS_SONGS = {
     FILE_PATH + "Christmas_Carols_-_The_Night_Before_Christmas.mid": (6, "C"),
 }
 
-# Hur mycket melodin ska transponeras beroende på vilken tonart den är i
-TRANSPOSE_TO_C = {
-    "C" : 0,
-    "D" : -2,
-    "E" : -4,
-    "F" : -5,
-    "G" : -7,
-    "A" : -9,
-    "B" : -11,
-}
-
 def transpose_to_c(song: list[int], key: str) -> list[int]:
+    """Tar sånger som en lista av integers samt deras tonart som en string och transponerar
+    dem till tonarten C."""
+    # Hur mycket melodin ska transponeras beroende på vilken tonart den är i
+    TRANSPOSE_TO_C = {
+        "C" : 0,
+        "D" : -2,
+        "E" : -4,
+        "F" : -5,
+        "G" : -7,
+        "A" : -9,
+        "B" : -11,
+    }
     transpose = TRANSPOSE_TO_C[key]
     return [note + transpose for note in song]
 
@@ -106,7 +107,9 @@ def read_all_transposed(files: dict[str, int]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor med låtarna transponerade nedåt till tonarten C."""
     return [transpose_to_c(read_midi(filename, track_and_key[0]), track_and_key[1]) for filename, track_and_key in files.items()]
 
-def find_longest_note(files: dict[str: int]) -> int:
+def find_longest_note(files: dict[str: tuple[int, str]]) -> int:
+    """Tar ett dictionary med filer och deras information (se CHRISTMAS_SONGS) och returnerar
+    den längsta tonen i någon av låtarna."""
     for file, item in files.items():
         track_nr = item[0]
         mid = m.MidiFile(file)
@@ -130,6 +133,8 @@ def find_longest_note(files: dict[str: int]) -> int:
 
 
 def find_hi_lo_pitch(songs: list[list[int]]) -> tuple[int]:
+    """Tar en lista av låtar (varje låt är en lista av integers) och returnerar lägsta och högsta
+    tonerna hittade i någon av låtarna."""
     lowest = 127
     highest = 0
     for song in songs:
