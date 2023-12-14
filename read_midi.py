@@ -91,8 +91,8 @@ def read_rhythm(filename: str, track_nr: int) -> list[int]:
                     if counter%2:
                         durations.append(message.time)
                     counter += 1
-    #print(list(map(lambda notelength: (notelength/beats_per_minute), durations)))
-    return list(map(lambda notelength: (notelength/beats_per_minute), durations))
+    #print(list(map(lambda notelength: (round(100*notelength/beats_per_minute), durations)))
+    return list(map(lambda notelength: (round(100*notelength/beats_per_minute)), durations))
 
 def read_all(files: dict[str, tuple[int, str]]) -> list[list[int]]:
     """Läser alla filer i 'files' och returnerar som en lista av listor."""

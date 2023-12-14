@@ -35,13 +35,13 @@ def binary_vector(prob_vector):
             bi_vector[x]=1 #alla tidigare element har satts till noll, alltså blir det här elementet en etta.
     return bi_vector
     
-def make_prob_matrix(list_of_songs: list[list[int]]) -> np.ndarray:
+def make_prob_matrix(list_of_songs: list[list[int]], LOWER_LIMIT1, UPPER_LIMIT1) -> np.ndarray:
     """Tar en lista av listor som innehåller alla toner i en sång (en sådan genererad av read_midi.read_midi) och returnerar
     en matris med sannolikheterna att en viss ton leder till en annan. Matrisen har antalet toner (UPPER_LIMIT-LOWER_LIMIT) som storlek."""
-    num_notes = UPPER_LIMIT-LOWER_LIMIT
+    num_notes = UPPER_LIMIT1-LOWER_LIMIT1
     matrix = np.zeros(shape=(num_notes, num_notes))
     # Loopa igenom alla möjliga toner
-    for note in range(LOWER_LIMIT, UPPER_LIMIT):
+    for note in range(LOWER_LIMIT1, UPPER_LIMIT1):
         # Listan här räknar hur många gånger varje ton förekommer efter 'note'
         # Om tonen 50 kom efter 'note' 5 gånger så blir note_occurances[50] == 5
         # Om LOWER_LIMIT är 5 så kommer note_occurances[0] att motsvara ton 5
@@ -64,7 +64,7 @@ def make_prob_matrix(list_of_songs: list[list[int]]) -> np.ndarray:
                 
                 song.pop(note_index)
                 # Nu är den tonen som kom efter på index 'note_index'
-                note_occurances[song[note_index] - LOWER_LIMIT] += 1
+                note_occurances[song[note_index] - LOWER_LIMIT1] += 1
                 
         if sum(note_occurances) == 0:
             # Om 'note' aldrig fanns i någon av sångerna kommer listan vara tom.
@@ -77,7 +77,7 @@ def make_prob_matrix(list_of_songs: list[list[int]]) -> np.ndarray:
         # Se till att summan är 1
         prob_vector = make_col_sum_one(prob_vector)
         # Sätt kollonnen för den här tonen till den normaliserade sannolikhetsvektorn
-        matrix[:,note - LOWER_LIMIT] = prob_vector
+        matrix[:,note - LOWER_LIMIT1] = prob_vector
     return matrix
         
     
@@ -139,10 +139,11 @@ def main():
     output_file = "christmas_markov_trans.mid"
     # -- Generera toner utifrån alla jullåtar --
     # TRANSPONERADE NEDÅT TILL TONARTEN C 
-    songs_notes, songs_rythm = read_all_transposed_rhythm(song_dict)
+    songs_notes, songs_rhythm = read_all_transposed_rhythm(song_dict)
     
     
-    note_mat = make_prob_matrix(songs_notes)
+    note_mat = make_prob_matrix(songs_notes, LOWER_LIMIT, UPPER_LIMIT)
+    rhythm_mat = make_prob_matrix(songs_rhythm, 0, 1500)
 
     # Skapa startvektor med värdet för tonen 'start_note' satt till 1
     start_vec = np.zeros((note_mat.shape[0]))
@@ -160,7 +161,8 @@ def main():
     print(f"Generarad musik utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, med {start_note} som startton, skrevs till '{output_file}'.")
         
     # Visa bild av matrisen
-    plt.imshow(note_mat, interpolation="none", extent= [LOWER_LIMIT, UPPER_LIMIT, UPPER_LIMIT, LOWER_LIMIT])
+    #plt.imshow(note_mat, interpolation="none", extent= [LOWER_LIMIT, UPPER_LIMIT, UPPER_LIMIT, LOWER_LIMIT])
+    plt.imshow(rhythm_mat)
     plt.show()
     
 if __name__ == "__main__":
