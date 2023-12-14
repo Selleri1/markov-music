@@ -8,7 +8,6 @@ from write_midi import *
 # Detta bestämmer storleken på matrisen.
 LOWER_LIMIT, UPPER_LIMIT = find_hi_lo_pitch(read_all_transposed(CHRISTMAS_SONGS))
 UPPER_LIMIT += 1
-print(LOWER_LIMIT, UPPER_LIMIT)
 
 random.seed(314154)
 np.random.seed(314154)
@@ -140,10 +139,13 @@ def choose_note_stochastic(prob_vec: np.ndarray) -> int:
     return np.random.choice(np.arange(LOWER_LIMIT, UPPER_LIMIT), p=prob_vec)
 
 def main():
-    start_note = 60
+    # Värden:
+    start_note = 60 # ton nr. 60 är C4
+    song_dict = CHRISTMAS_SONGS
+    output_file = "christmas_markov_trans.mid"
     # -- Generera toner utifrån alla jullåtar --
     # TRANSPONERADE NEDÅT TILL TONARTEN C 
-    songs = read_all_transposed(CHRISTMAS_SONGS)
+    songs = read_all_transposed(song_dict)
     
     mat = make_prob_matrix(songs)
 
@@ -157,9 +159,11 @@ def main():
         vec = markov(vec, mat)
         notes.append(choose_note_stochastic(vec))
         
-    write_notes(notes, 240, 1, "Markov Christmas music", "christmas_markov_trans.mid")
-    print("Generarade toner utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, skrevs till 'christmas_markov_trans.mid'.")
+    write_notes(notes, 240, 1, "Markov Christmas music", output_file)
+    
+    print(f"Generarad musik utifrån alla våra jullåtar i 'CHRISTMAS_SONGS', transponerade till C, med {start_note} som startton, skrevs till '{output_file}'.")
         
+    # Visa bild av matrisen
     plt.imshow(mat, interpolation="none", extent= [LOWER_LIMIT, UPPER_LIMIT, UPPER_LIMIT, LOWER_LIMIT])
     plt.show()
     
