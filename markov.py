@@ -34,12 +34,6 @@ def binary_vector(prob_vector):
         else:
             bi_vector[x]=1 #alla tidigare element har satts till noll, alltså blir det här elementet en etta.
     return bi_vector
-
-def markov(x: np.ndarray, P: np.ndarray) -> np.ndarray:
-    """Utför formeln för markovkedjan. Tar in ett x_k och returnerar ett x_(k+1) med
-    matrisen P."""
-    return P @ x
-
     
 def make_prob_matrix(list_of_songs: list[list[int]]) -> np.ndarray:
     """Tar en lista av listor som innehåller alla toner i en sång (en sådan genererad av read_midi.read_midi) och returnerar
@@ -118,7 +112,7 @@ def test():
     x = x0
     lista_av_sannolikhetsvektorer=[]
     for i in range(10000):
-        x = markov(x, P)
+        x = P @ x
         lista_av_sannolikhetsvektorer.append(x)
         if i >= 10000-5:
             print(x[85:], end="\n--------\n") 
@@ -156,7 +150,8 @@ def main():
     notes = []
     vec = start_vec
     for _ in range(40):
-        vec = markov(vec, mat)
+        # v_(n+1) = mat v_n
+        vec = mat @ vec
         notes.append(choose_note_stochastic(vec))
         
     write_notes(notes, 240, 1, "Markov Christmas music", output_file)
